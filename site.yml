@@ -1,0 +1,6 @@
+- name: My first play
+  hosts: vps
+  vars_files:
+    - vault.yml
+  roles:
+    - ping-vps
