@@ -1,0 +1,3 @@
+# Default values (can be overridden in vault.yml)
+litespeed_conf_dir: "/usr/local/lsws/conf"
+webroot: "/usr/local/lsws/crystallandacademy/html"

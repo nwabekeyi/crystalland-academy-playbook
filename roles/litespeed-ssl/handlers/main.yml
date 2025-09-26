@@ -1,0 +1,3 @@
+- name: Restart LiteSpeed
+  shell: /usr/local/lsws/bin/lswsctrl restart
+  become: yes

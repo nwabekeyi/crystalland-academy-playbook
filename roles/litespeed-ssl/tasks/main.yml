@@ -1,0 +1,37 @@
+---
+- name: Ensure dependencies are installed
+  apt:
+    name: [curl, socat]
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Ensure webroot directory exists
+  file:
+    path: "{{ webroot }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0755'
+
+- name: Ensure .well-known/acme-challenge directory exists
+  file:
+    path: "{{ webroot }}/.well-known/acme-challenge"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0755'
+
+- name: Place test file in challenge directory (for debugging)
+  copy:
+    dest: "{{ webroot }}/.well-known/acme-challenge/test.txt"
+    content: "hello from ansible"
+    mode: '0644'
+
+# Include install or renew tasks based on variable
+- name: Include SSL installation using acme.sh
+  include_tasks: install_ssl_acme.yml
+  when: ssl_action == "install"
+
+- name: Include SSL renewal using acme.sh
+  include_tasks: renew_ssl_acme.yml
+  when: ssl_action == "renew"

@@ -1,6 +1,7 @@
 - name: My first play
   hosts: vps
   vars_files:
-    - vault.yml
+    - vault.yml   # contains domain or secrets
   roles:
-    - ping-vps
+    # - ping-vps
+    - litespeed-ssl

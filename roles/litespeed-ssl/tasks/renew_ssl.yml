@@ -1,0 +1,17 @@
+- name: Renew SSL certificate via acme.sh
+  shell: |
+    # Ensure acme.sh is installed
+    if [ ! -f ~/.acme.sh/acme.sh ]; then
+      curl https://get.acme.sh | sh
+      source ~/.bashrc
+    fi
+
+    # Issue or renew certificate for the domain
+    ~/.acme.sh/acme.sh --issue --force -d {{ domain }} -w /usr/local/lsws/{{ domain }}/public_html
+
+    # Install the cert to a specific path (LiteSpeed can use these files)
+    ~/.acme.sh/acme.sh --install-cert -d {{ domain }} \
+      --key-file /etc/ssl/{{ domain }}.key \
+      --fullchain-file /etc/ssl/{{ domain }}.crt \
+      --reloadcmd "systemctl restart lsws"
+  notify: restart litespeed
